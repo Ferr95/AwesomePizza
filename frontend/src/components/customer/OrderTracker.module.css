@@ -1,0 +1,151 @@
+.section {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  color: var(--color-secondary);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.searchBox {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.input {
+  flex: 1;
+  padding: 0.85rem 1.2rem;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: border-color var(--transition);
+}
+
+.input:focus {
+  border-color: var(--color-primary);
+}
+
+.searchButton {
+  padding: 0.85rem 1.5rem;
+  background: var(--color-primary);
+  color: white;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.searchButton:hover:not(:disabled) {
+  background: var(--color-primary-dark);
+}
+
+.searchButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.timeline {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  position: relative;
+  padding: 1rem 0 2rem;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  height: 3px;
+  background: var(--color-border);
+  z-index: 0;
+}
+
+.timelineProgress {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  height: 3px;
+  background: var(--color-primary);
+  z-index: 1;
+  transition: width 0.5s ease;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  flex: 1;
+}
+
+.stepDot {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: white;
+  margin-bottom: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.stepActive {
+  background: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(232, 93, 38, 0.2);
+}
+
+.stepCompleted {
+  background: var(--color-success);
+}
+
+.stepLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--color-text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.stepLabelActive {
+  color: var(--color-primary);
+}
+
+.updatedAt {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--color-text-light);
+  margin-top: 1rem;
+}
+
+.notFound {
+  text-align: center;
+  padding: 2rem;
+  color: var(--color-text-light);
+}
+
+@media (max-width: 500px) {
+  .stepLabel {
+    font-size: 0.65rem;
+  }
+  .stepDot {
+    width: 32px;
+    height: 32px;
+    font-size: 0.85rem;
+  }
+}

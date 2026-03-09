@@ -1,9 +1,10 @@
 # Awesome Pizza - Order Management System
 
-A REST API for managing pizza orders. Customers can place orders without registration and track them via a unique tracking code. The pizzaiolo manages a FIFO queue, processing one order at a time.
+A full-stack application for managing pizza orders. Customers can browse the menu, place orders without registration, and track them via a unique tracking code. The pizzaiolo manages a FIFO queue, processing one order at a time.
 
 ## Tech Stack
 
+### Backend
 - **Java 21** + **Spring Boot 3.3.3**
 - **H2 Database** (in-memory, no setup required)
 - **Spring Data JPA** + **Hibernate**
@@ -11,6 +12,14 @@ A REST API for managing pizza orders. Customers can place orders without registr
 - **SpringDoc OpenAPI** for API documentation
 - **JUnit 5** + **Mockito** for testing
 - **Lombok** for reducing boilerplate
+
+### Frontend
+- **React 18** + **TypeScript** (via **Vite**)
+- **React Router v6** for client-side routing
+- **Axios** for HTTP requests
+- **Framer Motion** for animations and transitions
+- **CSS Modules** + CSS custom properties for scoped theming
+- **react-hot-toast** for notifications
 
 ## Design Patterns
 
@@ -21,8 +30,18 @@ A REST API for managing pizza orders. Customers can place orders without registr
 - **Service Layer** — Interface + Implementation separation
 - **DTO Pattern** — Request/Response DTOs decoupled from domain entities
 - **Strategy Pattern** — FIFO ordering via `ORDER BY createdAt ASC`
+- **Context Pattern** — React Context + useReducer for cart state management
+- **Polling Pattern** — Custom `usePolling` hook for real-time order tracking
+
+## Prerequisites
+
+- **Java 17+** (tested with Java 18)
+- **Node.js 20+** and **npm**
+- **Maven** (included via Maven Wrapper)
 
 ## How to Build & Run
+
+### Backend
 
 ```bash
 # Build and run tests
@@ -32,7 +51,59 @@ mvn clean install
 mvn spring-boot:run
 ```
 
-The application starts on **http://localhost:8080**.
+Or use the provided startup scripts:
+
+```bash
+# Linux/macOS/Git Bash
+bash start.sh
+
+# Windows
+start.bat
+```
+
+The backend starts on **http://localhost:8080**.
+
+### Frontend
+
+```bash
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+The frontend starts on **http://localhost:5173**.
+
+> **Note:** Start the backend first. The Vite dev server proxies all `/api` requests to `http://localhost:8080` automatically.
+
+### Production Build
+
+```bash
+cd frontend
+npm run build
+```
+
+The built files are output to `frontend/dist/`.
+
+## Application Features
+
+### Customer View (`/`)
+- **Pizza Carousel** — Horizontally scrollable menu with animated cards, scroll-snap, and hover effects
+- **Shopping Cart** — Floating cart button with slide-out drawer, quantity controls, and subtotal
+- **Order Placement** — Optional customer name, instant order submission with tracking code confirmation
+- **Order Tracking** — Enter a tracking code to see a real-time 4-step status timeline (auto-refreshes every 5 seconds)
+
+### Pizzaiolo Dashboard (`/pizzaiolo`)
+- **Current Order** — Highlighted card showing the order currently being prepared
+- **Order Queue** — FIFO list of pending and ready orders with context-aware action buttons
+- **Status Management** — One-click status transitions: Start Preparing → Mark Ready → Mark Picked Up
+- **Auto-Refresh** — Queue updates automatically every 3 seconds
+
+### Dedicated Tracking Page (`/track`)
+- Standalone page for order tracking with URL parameter support (`/track?code=ABC12345`)
 
 ## API Documentation
 
@@ -115,13 +186,32 @@ mvn test -Dsurefire.useFile=false
 ## Project Structure
 
 ```
-src/main/java/com/awesomepizza/
-├── config/          # Data initialization
-├── controller/      # REST controllers
-├── domain/          # Entities and enums
-├── dto/             # Request/Response DTOs
-├── exception/       # Custom exceptions and global handler
-├── mapper/          # Entity-to-DTO mapping
-├── repository/      # Spring Data JPA repositories
-└── service/         # Business logic (interface + impl)
+awesome-pizza/
+├── src/main/java/com/awesomepizza/
+│   ├── config/          # CORS config, data initialization
+│   ├── controller/      # REST controllers (Order, Pizza, Pizzaiolo, Home)
+│   ├── domain/          # Entities (Order, OrderItem, Pizza) and enums (OrderStatus)
+│   ├── dto/             # Request/Response DTOs
+│   ├── exception/       # Custom exceptions and global handler
+│   ├── mapper/          # Entity-to-DTO mapping
+│   ├── repository/      # Spring Data JPA repositories
+│   └── service/         # Business logic (interface + impl)
+├── src/test/java/       # Unit and integration tests
+├── frontend/
+│   ├── src/
+│   │   ├── api/         # Axios HTTP client and API functions
+│   │   ├── types/       # TypeScript interfaces matching backend DTOs
+│   │   ├── context/     # Cart state management (Context + useReducer)
+│   │   ├── hooks/       # Custom hooks (usePolling for auto-refresh)
+│   │   ├── components/
+│   │   │   ├── layout/      # Navbar
+│   │   │   ├── customer/    # PizzaCarousel, PizzaCard, Cart, OrderTracker, OrderConfirmation
+│   │   │   └── pizzaiolo/   # OrderQueue, OrderCard, CurrentOrder, StatusBadge
+│   │   ├── pages/       # CustomerPage, TrackPage, PizzaioloPage
+│   │   ├── utils/       # Formatting helpers (currency, date)
+│   │   └── styles/      # Global CSS with theme variables
+│   └── package.json
+├── start.sh             # Startup script (Linux/macOS/Git Bash)
+├── start.bat            # Startup script (Windows)
+└── pom.xml
 ```

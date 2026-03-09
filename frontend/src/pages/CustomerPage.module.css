@@ -1,0 +1,14 @@
+.page {
+  min-height: calc(100vh - 72px);
+}
+
+.divider {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.dividerLine {
+  border: none;
+  border-top: 1px solid var(--color-border);
+}
